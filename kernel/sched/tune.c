@@ -97,7 +97,7 @@ root_schedtune = {
  *    value
  */
 #ifdef CONFIG_MTK_IO_BOOST
-#define BOOSTGROUPS_COUNT 6
+#define BOOSTGROUPS_COUNT 7
 #else
 #define BOOSTGROUPS_COUNT 5
 #endif
