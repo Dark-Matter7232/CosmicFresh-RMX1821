@@ -93,6 +93,7 @@
 #include <linux/cpufreq_times.h>
 #include <linux/simple_lmk.h>
 
+#include <linux/cpu_input_boost.h>
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
 #include <linux/uaccess.h>
@@ -2133,6 +2134,10 @@ long _do_fork(unsigned long clone_flags,
 //zhoumingjun@Swdp.shanghai, 2017/04/19, add process_event_notifier support
 	struct process_event_data pe_data;
 #endif
+
+	/* Boost CPU to the max for 50 ms when userspace launches an app */
+	if (task_is_zygote(current))
+		cpu_input_boost_kick_max(50);
 
 	/*
 	 * Determine whether and which event to report to ptracer.  When
