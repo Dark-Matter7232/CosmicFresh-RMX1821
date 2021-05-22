@@ -19,7 +19,7 @@ config ZRAM
 config ZRAM_DEDUP
 	bool "Deduplication support for ZRAM data"
 	depends on ZRAM && LIBCRC32C
-	default n
+	default y
 	help
 	  Deduplicate ZRAM data to reduce amount of memory consumption.
 	  Advantage largely depends on the workload. In some cases, this
