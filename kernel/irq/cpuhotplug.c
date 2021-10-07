@@ -133,7 +133,7 @@ static bool migrate_one_irq(struct irq_desc *desc)
 	 */
 	err = irq_do_set_affinity(d, affinity, false);
 	if (err) {
-		pr_warn_ratelimited("IRQ%u: set affinity failed(%d).\n",
+		pr_debug_ratelimited("IRQ%u: set affinity failed(%d).\n",
 				    d->irq, err);
 		brokeaff = false;
 	}
@@ -170,7 +170,7 @@ void irq_migrate_all_off_this_cpu(void)
 #ifndef VENDOR_EDIT
 // Nanwei.Deng@BSP.CHG.Basic, 2018/07/13  Add for delete log in release version
 		if (affinity_broken) {
-			pr_warn_ratelimited("IRQ %u: no longer affine to CPU%u\n",
+			pr_debug_ratelimited("IRQ %u: no longer affine to CPU%u\n",
 					    irq, smp_processor_id());
 		}
 #else
