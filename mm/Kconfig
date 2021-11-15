@@ -758,6 +758,10 @@ config DEVICE_PUBLIC
 config ARCH_HAS_PTE_SPECIAL
 	bool
 
+config DISABLE_OOM_KILLER
+	bool "Disable OOM Killer"
+	default n
+
 config ARCH_SUPPORTS_SPECULATIVE_PAGE_FAULT
        def_bool n
 
