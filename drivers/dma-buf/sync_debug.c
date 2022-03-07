@@ -171,7 +171,6 @@ static int sync_debugfs_show(struct seq_file *s, void *unused)
 		struct sync_file *sync_file =
 			container_of(pos, struct sync_file, sync_file_list);
 
-		sync_print_sync_file(s, sync_file);
 		seq_putc(s, '\n');
 	}
 	spin_unlock_irq(&sync_file_list_lock);
