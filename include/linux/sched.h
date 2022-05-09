@@ -1439,14 +1439,6 @@ struct task_struct {
 	struct vm_struct		*stack_vm_area;
 #endif
 
-#ifdef CONFIG_ANDROID_SIMPLE_LMK
-	struct task_struct		*simple_lmk_next;
-#endif
-
-#ifdef CONFIG_ANDROID_SIMPLE_LMK
-	struct task_struct		*simple_lmk_next;
-#endif
-
 #ifdef CONFIG_THREAD_INFO_IN_TASK
 	/* A live task holds one reference: */
 	atomic_t			stack_refcount;
