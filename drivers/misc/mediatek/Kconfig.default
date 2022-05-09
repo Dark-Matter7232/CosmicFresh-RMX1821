@@ -5,7 +5,6 @@ config ANDROID_DEFAULT_SETTING
 	select AIO
 	select ANDROID
 	select ANDROID_BINDER_IPC
-	select ARM64_SW_TTBR0_PAN
 	select ARMV8_DEPRECATED if COMPAT
 	select ASHMEM
 	select BLK_DEV_INITRD
@@ -92,8 +91,6 @@ config ANDROID_DEFAULT_SETTING
 	select IPV6_VTI
 	select L2TP
 	select MAGIC_SYSRQ
-	select MEMCG
-	select MEMCG_SWAP
 	select MODULES
 	select MODULE_UNLOAD
 	select MODVERSIONS
@@ -180,7 +177,6 @@ config ANDROID_DEFAULT_SETTING
 	select PREEMPT
 	select PROC_FS
 	select PROCESS_RECLAIM
-	select PROFILING
 	select RTC_CLASS
 	select RT_GROUP_SCHED
 	select SECCOMP
@@ -229,10 +225,7 @@ config ANDROID_DEFAULT_SETTING
 
 config MTK_ANDROID_DEFAULT_SETTING
 	bool "Select MTK android common setting by default"
-	select HW_RANDOM
-	select HW_RANDOM_MT67XX
 	select PGTABLE_MAPPING if ZSMALLOC && (ARM || ARM64)
-	select PSI
 	select MTK_MIX_DEVICES
 	select SPECULATIVE_PAGE_FAULT if (ARCH_SUPPORTS_SPECULATIVE_PAGE_FAULT && ARCH_HAS_PTE_SPECIAL && MMU && SMP)
 	help
