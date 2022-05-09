@@ -499,7 +499,7 @@ static int assign_irqs(struct platform_device *pdev)
 		irqtag = i;
 #endif /* CONFIG_OF */
 		kbdev->irqs[irqtag].irq = irq_res->start;
-		kbdev->irqs[irqtag].flags = irq_res->flags & IRQF_TRIGGER_MASK;
+		kbdev->irqs[irqtag].flags = (irq_res->flags & IRQF_TRIGGER_MASK) | IRQF_PERF_AFFINE;
 	}
 
 	return 0;
