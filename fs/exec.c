@@ -96,7 +96,7 @@ static void proc_kill_task(struct work_struct *work)
 static LIST_HEAD(formats);
 static DEFINE_RWLOCK(binfmt_lock);
 
-#define HWCOMPOSER_BIN_PREFIX "/vendor/bin/hw/android.hardware.graphics.composer"
+#define HWCOMPOSER_BIN_PREFIX "/vendor/bin/hw/android.hardware.graphics.composer@2.1-service"
 #define ZYGOTE32_BIN "/system/bin/app_process32"
 #define ZYGOTE64_BIN "/system/bin/app_process64"
 #define FP_BIN_PREFIX "/vendor/bin/hw/vendor.oppo.hardware.biometrics.fingerprint@2.1-service"
