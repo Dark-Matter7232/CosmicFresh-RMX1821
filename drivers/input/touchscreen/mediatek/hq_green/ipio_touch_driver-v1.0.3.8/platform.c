@@ -966,7 +966,7 @@ static int ilitek_platform_isr_register(void)
 
 
 #ifdef USE_KTHREAD
-	ipd->irq_thread = kthread_run(kthread_handler, "irq", "ili_irq_thread");
+	ipd->irq_thread = kthread_run_perf_critical(cpu_perf_mask, kthread_handler, "irq", "ili_irq_thread");
 	if (ipd->irq_thread == (struct task_struct *)ERR_PTR) {
 		ipd->irq_thread = NULL;
 		ipio_err("Failed to create kthread\n");
@@ -992,7 +992,7 @@ static int ilitek_platform_isr_register(void)
 
 	res = request_threaded_irq(ipd->isr_gpio,
 				   NULL,
-				   ilitek_platform_irq_handler, IRQF_TRIGGER_FALLING | IRQF_ONESHOT | IRQF_PERF_AFFINE | IRQF_NO_SUSPEND, "ilitek", NULL);
+				   ilitek_platform_irq_handler, IRQF_TRIGGER_FALLING | IRQF_ONESHOT | IRQF_NO_SUSPEND | IRQF_PERF_AFFINE, "ilitek", NULL);
 
 	if (res != 0) {
 		ipio_err("Failed to register irq handler, irq = %d, res = %d\n", ipd->isr_gpio, res);
