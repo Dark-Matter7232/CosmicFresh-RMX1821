@@ -2136,9 +2136,9 @@ long _do_fork(unsigned long clone_flags,
 	struct process_event_data pe_data;
 #endif
 
-	/* Boost CPU to the max for 50 ms when userspace launches an app */
+	/* Boost CPU to the max for 70 ms when userspace launches an app */
 	if (task_is_zygote(current))
-		cpu_input_boost_kick_max(50);
+		cpu_input_boost_kick_max(70);
 
 	/*
 	 * Determine whether and which event to report to ptracer.  When
