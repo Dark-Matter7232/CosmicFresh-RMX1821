@@ -148,7 +148,7 @@ struct oppo_debug_info {
 
 //---ESD Protect.---
 #define NVT_TOUCH_ESD_PROTECT 1
-#define NVT_TOUCH_ESD_CHECK_PERIOD 1500	/* ms */
+#define NVT_TOUCH_ESD_CHECK_PERIOD 125		/* ms */
 #define NVT_TOUCH_WDT_RECOVERY 1
 
 struct nvt_ts_data {
