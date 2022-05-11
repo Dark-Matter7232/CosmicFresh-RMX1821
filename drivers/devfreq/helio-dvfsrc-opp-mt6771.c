@@ -109,7 +109,7 @@ unsigned int get_min_opp_for_ddr(int ddr_opp)
 unsigned int get_vcore_opp_volt(unsigned int opp)
 {
 	if (opp >= VCORE_DVFS_OPP_NUM) {
-		pr_info("WRONG OPP: %u\n", opp);
+		printk_once("WRONG OPP: %u\n", opp);
 		return 0;
 	}
 
@@ -138,7 +138,7 @@ unsigned int update_vcore_opp_uv(unsigned int opp, unsigned int vcore_uv)
 
 static int get_soc_efuse(void)
 {
-	pr_info("[VcoreFS]efuse=0x%x soc_efuse=0x%x\n",
+	printk_once("[VcoreFS]efuse=0x%x soc_efuse=0x%x\n",
 	get_devinfo_with_index(65), ((get_devinfo_with_index(65) >> 12) & 0x3));
 	return ((get_devinfo_with_index(65) >> 12) & 0x3);
 }
@@ -148,7 +148,7 @@ static void build_vcore_opp_table(unsigned int ddr_type, unsigned int soc_efuse)
 	int i, mask = 0x3;
 
 	if (soc_efuse > 1) {
-		pr_info("WRONG VCORE EFUSE(%d)\n", soc_efuse);
+		printk_once("WRONG VCORE EFUSE(%d)\n", soc_efuse);
 		/* set to default table */
 		for (i = 0; i < VCORE_DVFS_OPP_NUM; i++)
 			vcore_opp_table[i] = *(vcore_opp[i]);
@@ -199,7 +199,7 @@ static void build_vcore_opp_table(unsigned int ddr_type, unsigned int soc_efuse)
 		vcore_dvfs_to_ddr_opp[2] = DDR_OPP_1;
 		vcore_dvfs_to_ddr_opp[3] = DDR_OPP_2;
 	} else {
-		pr_info("WRONG SPM DRAM TYPE: %d\n", ddr_type);
+		printk_once("WRONG SPM DRAM TYPE: %d\n", ddr_type);
 		return;
 	}
 
@@ -210,13 +210,13 @@ static void build_vcore_opp_table(unsigned int ddr_type, unsigned int soc_efuse)
 		vcore_opp_table[i] =
 			max(vcore_opp_table[i], vcore_opp_table[i + 1]);
 
-	pr_info("[VcoreFS]table(d=%d, ef=%d): %d, %d, %d, %d\n",
+	printk_once("[VcoreFS]table(d=%d, ef=%d): %d, %d, %d, %d\n",
 		ddr_type, soc_efuse, vcore_opp_table[0], vcore_opp_table[1],
 		vcore_opp_table[2], vcore_opp_table[3]);
-	pr_info("[VcoreFS]vcore opp tbl: %d, %d, %d, %d\n",
+	printk_once("[VcoreFS]vcore opp tbl: %d, %d, %d, %d\n",
 		vcore_dvfs_to_vcore_opp[0], vcore_dvfs_to_vcore_opp[1],
 		vcore_dvfs_to_vcore_opp[2], vcore_dvfs_to_vcore_opp[3]);
-	pr_info("[VcoreFS]ddr opp tbl: %d, %d, %d, %d\n",
+	printk_once("[VcoreFS]ddr opp tbl: %d, %d, %d, %d\n",
 		vcore_dvfs_to_ddr_opp[0], vcore_dvfs_to_ddr_opp[1],
 		vcore_dvfs_to_ddr_opp[2], vcore_dvfs_to_ddr_opp[3]);
 }
@@ -320,7 +320,7 @@ static int vcore_opp_procfs_init(void)
 
 	dir = proc_mkdir("vcore_opp", NULL);
 	if (!dir) {
-		pr_info("%s: Failed to create /proc/vcore_opp dir\n", __func__);
+		printk_once("%s: Failed to create /proc/vcore_opp dir\n", __func__);
 		return -ENOMEM;
 	}
 
@@ -328,7 +328,7 @@ static int vcore_opp_procfs_init(void)
 		if (!proc_create(det_entries_vcore[i].name,
 					0644, dir,
 					det_entries_vcore[i].fops)) {
-			pr_info("%s: Failed to create /proc/vcore_opp/%s\n",
+			printk_once("%s: Failed to create /proc/vcore_opp/%s\n",
 					__func__, det_entries_vcore[i].name);
 
 			return -ENOMEM;
