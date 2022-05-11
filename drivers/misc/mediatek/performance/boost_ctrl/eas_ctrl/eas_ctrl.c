@@ -163,17 +163,6 @@ int update_schedplus_down_throttle_ns(int kicker, int nsec)
 	cur_schedplus_down_throttle_ns = final_down_thres < 0 ?
 		-1 : final_down_thres;
 
-#ifdef CONFIG_CPU_FREQ_GOV_SCHEDUTIL
-	if (debug_schedplus_down_throttle_nsec == -1) {
-		if (cur_schedplus_down_throttle_ns >= 0)
-			schedutil_set_down_rate_limit_us(0,
-				cur_schedplus_down_throttle_ns / 1000);
-		else
-			schedutil_set_down_rate_limit_us(0,
-				default_schedplus_down_throttle_ns / 1000);
-	}
-#endif
-
 	pr_debug("%s %d %d %d %d", __func__, kicker, nsec,
 		cur_schedplus_down_throttle_ns,
 		debug_schedplus_down_throttle_nsec);
@@ -209,17 +198,6 @@ int update_schedplus_up_throttle_ns(int kicker, int nsec)
 
 	cur_schedplus_up_throttle_ns = final_up_thres < 0 ?
 		-1 : final_up_thres;
-
-#ifdef CONFIG_CPU_FREQ_GOV_SCHEDUTIL
-	if (debug_schedplus_up_throttle_nsec == -1) {
-		if (cur_schedplus_up_throttle_ns >= 0)
-			schedutil_set_up_rate_limit_us(0,
-				cur_schedplus_up_throttle_ns / 1000);
-		else
-			schedutil_set_up_rate_limit_us(0,
-				default_schedplus_up_throttle_ns / 1000);
-	}
-#endif
 
 	pr_debug("%s %d %d %d %d", __func__, kicker, nsec,
 		cur_schedplus_up_throttle_ns,
@@ -1070,14 +1048,6 @@ static ssize_t perfmgr_debug_schedplus_down_throttle_proc_write(
 	mutex_lock(&boost_eas);
 	debug_schedplus_down_throttle_nsec = data;
 
-#ifdef CONFIG_CPU_FREQ_GOV_SCHEDUTIL
-	if (data == -1)
-		schedutil_set_down_rate_limit_us(0,
-			cur_schedplus_down_throttle_ns);
-	else if (data >= 0)
-		schedutil_set_down_rate_limit_us(0, data / 1000);
-#endif
-
 	mutex_unlock(&boost_eas);
 
 	return cnt;
@@ -1128,14 +1098,6 @@ static ssize_t perfmgr_debug_schedplus_up_throttle_proc_write(
 
 	mutex_lock(&boost_eas);
 	debug_schedplus_up_throttle_nsec = data;
-
-#ifdef CONFIG_CPU_FREQ_GOV_SCHEDUTIL
-	if (data == -1)
-		schedutil_set_up_rate_limit_us(0,
-			cur_schedplus_up_throttle_ns);
-	else if (data >= 0)
-		schedutil_set_up_rate_limit_us(0, data / 1000);
-#endif
 
 	mutex_unlock(&boost_eas);
 

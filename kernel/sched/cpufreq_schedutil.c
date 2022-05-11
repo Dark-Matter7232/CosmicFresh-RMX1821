@@ -652,8 +652,8 @@ int schedutil_set_up_rate_limit_us(int cpu, unsigned int rate_limit_us)
 }
 EXPORT_SYMBOL(schedutil_set_up_rate_limit_us);
 
-static struct governor_attr up_rate_limit_us = __ATTR_RW(up_rate_limit_us);
-static struct governor_attr down_rate_limit_us = __ATTR_RW(down_rate_limit_us);
+static struct governor_attr up_rate_limit_us = __ATTR_RO(up_rate_limit_us);
+static struct governor_attr down_rate_limit_us = __ATTR_RO(down_rate_limit_us);
 
 static struct attribute *sugov_attributes[] = {
 	&up_rate_limit_us.attr,
