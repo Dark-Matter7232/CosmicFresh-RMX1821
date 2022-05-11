@@ -126,6 +126,6 @@ all.config
 kernel/configs/android-*.cfg
 build-shit
 out
-los-4.9*
-clang
-AnyKernel
+CosmicStaff/*.zip
+CosmicStaff/Image*
+CosmicFresh/CosmicFresh-*
