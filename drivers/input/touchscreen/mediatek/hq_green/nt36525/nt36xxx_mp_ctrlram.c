@@ -2171,7 +2171,6 @@ int32_t nvt_mp_parse_array(struct device_node *np, const char *name, int32_t *ar
 			nvt_print_data_log_in_one_line(array + Y_Channel * X_Channel, Key_Channel, NULL);
 			printk("\n");
 #endif
-#endif
 		} else {
 			seq_printf(m, "%s =\n", name);
 			for (j = 0; j < Y_Channel; j++) {
@@ -2179,6 +2178,7 @@ int32_t nvt_mp_parse_array(struct device_node *np, const char *name, int32_t *ar
 				nvt_print_data_log_in_one_line(array + j * X_Channel, X_Channel, m);
 				seq_printf(m, "\n");
 			}
+#endif
 #if TOUCH_KEY_NUM > 0
 			seq_printf(m, "[%d]\t", j);
 			nvt_print_data_log_in_one_line(array + Y_Channel * X_Channel, Key_Channel, m);
