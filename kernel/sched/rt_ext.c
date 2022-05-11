@@ -37,9 +37,9 @@ static inline void print_disable_runtime_unthrottle(struct rt_rq *rt_rq)
 #endif
 
 	rt_rq->rt_throttled = 0;
-	printk_deferred("[name:rt&]sched: disable_runtime: RT throttling inactivated cpu=%d\n",
+	printk_once("[name:rt&]sched: disable_runtime: RT throttling inactivated cpu=%d\n",
 			cpu_of(rq));
-	printk_deferred("[name:rt&]sched: cpu=%d, rt_time[%llu] rt_throttled=%d, rt_runtime[%llu]\n",
+	printk_once("[name:rt&]sched: cpu=%d, rt_time[%llu] rt_throttled=%d, rt_runtime[%llu]\n",
 			cpu_of(rq),
 			rt_rq->rt_time,
 			rt_rq->rt_throttled,
@@ -51,19 +51,19 @@ static inline void print_rt_throttle_info(int cpu, struct rt_rq *rt_rq,
 					u64 runtime_pre, u64 runtime)
 {
 	/* sched: print throttle*/
-	printk_deferred("[name:rt&]sched: initial rt_time %llu, start at %llu\n",
+	printk_once("[name:rt&]sched: initial rt_time %llu, start at %llu\n",
 			per_cpu(init_rt_time, cpu),
 			per_cpu(rt_period_time, cpu));
-	printk_deferred("[name:rt&]sched: cpu=%d rt_time %llu <-> runtime[%llu -> %llu]",
+	printk_once("[name:rt&]sched: cpu=%d rt_time %llu <-> runtime[%llu -> %llu]",
 			cpu, rt_rq->rt_time, runtime_pre, runtime);
-	printk_deferred("exec_task[%d: %s] prio:%d exec_delta[%llu] clock[%llu] exec_start[%llu]\n",
+	printk_once("exec_task[%d: %s] prio:%d exec_delta[%llu] clock[%llu] exec_start[%llu]\n",
 			per_cpu(exec_task, cpu).pid,
 			per_cpu(exec_task, cpu).comm,
 			per_cpu(exec_task, cpu).prio,
 			per_cpu(exec_delta_time, cpu),
 			per_cpu(clock_task, cpu),
 			per_cpu(update_exec_start, cpu));
-	printk_deferred("[name:rt&]sched: update[%llu, %llu] pick[%llu, %llu] set_curr[%llu, %llu]\n",
+	printk_once("[name:rt&]sched: update[%llu, %llu] pick[%llu, %llu] set_curr[%llu, %llu]\n",
 			per_cpu(update_exec_start, cpu),
 			per_cpu(sched_update_exec_start, cpu),
 			per_cpu(pick_exec_start, cpu),
