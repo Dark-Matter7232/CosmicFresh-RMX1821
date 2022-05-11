@@ -281,7 +281,6 @@ static ssize_t LCM_HBM_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t num)
 {
 	int ret;
-	unsigned char payload[100] = "";
 	printk("oppo_display_hbm_support = %d\n", oppo_display_hbm_support);
 	if (oppo_display_hbm_support) {
 		HBM_pre_mode = HBM_mode;

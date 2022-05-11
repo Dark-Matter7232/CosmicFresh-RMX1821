@@ -5802,9 +5802,6 @@ done:
 	if (HBM_mode == 8) {
 		HBM_mode = 0;
 		get_monotonic_boottime(&panel_time_off);
-		scnprintf(payload, sizeof(payload), "EventID@@%d$$hbm@@hbm state on time = %ld sec$$ReportLevel@@%d",
-			OPPO_MM_DIRVER_FB_EVENT_ID_HBM,(panel_time_off.tv_sec - hbm_on_start),OPPO_MM_DIRVER_FB_EVENT_REPORTLEVEL_LOW);
-		upload_mm_kevent_fb_data(OPPO_MM_DIRVER_FB_EVENT_MODULE_DISPLAY,payload);
 	}
 	if (is_project(OPPO_19531) || is_project(OPPO_19391)) {
 		ds_rec_fpd = false;
