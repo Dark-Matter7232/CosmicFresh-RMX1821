@@ -3932,7 +3932,7 @@ static int smbchg_config_chg_battery_type(struct oppo_chg_chip *chip)
 		ret = rc;
 	} else {
 		if (chip->pmic_spmi.vfloat_mv != (max_voltage_uv / 1000)) {
-			pr_info("Vfloat changed from %dmV to %dmV for battery-type %s\n",
+			pr_debug("Vfloat changed from %dmV to %dmV for battery-type %s\n",
 				chip->pmic_spmi.vfloat_mv, (max_voltage_uv / 1000),
 				chip->pmic_spmi.battery_type);
 			rc = smbchg_float_voltage_set(chip,
@@ -3954,7 +3954,7 @@ static int smbchg_config_chg_battery_type(struct oppo_chg_chip *chip)
 	} else if (!rc) {
 		if (chip->pmic_spmi.iterm_ma != (iterm_ua / 1000)
 				&& !chip->pmic_spmi.iterm_disabled) {
-			pr_info("Term current changed from %dmA to %dmA for battery-type %s\n",
+			pr_debug("Term current changed from %dmA to %dmA for battery-type %s\n",
 				chip->pmic_spmi.iterm_ma, (iterm_ua / 1000),
 				chip->pmic_spmi.battery_type);
 			rc = smbchg_iterm_set(chip,

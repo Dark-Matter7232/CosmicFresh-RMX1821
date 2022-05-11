@@ -340,7 +340,7 @@ int charger_manager_enable_high_voltage_charging(
 	else if (en && consumer->hv_charging_disabled == true)
 		consumer->hv_charging_disabled = false;
 	else {
-		pr_info("[%s] already set: %d %d\n", __func__,
+		pr_debug("[%s] already set: %d %d\n", __func__,
 			consumer->hv_charging_disabled, en);
 		return 0;
 	}
@@ -357,7 +357,7 @@ int charger_manager_enable_high_voltage_charging(
 	}
 	mutex_unlock(&consumer_mutex);
 
-	pr_info("%s: user: %s, en = %d\n", __func__, dev_name(consumer->dev),
+	pr_debug("%s: user: %s, en = %d\n", __func__, dev_name(consumer->dev),
 		info->enable_hv_charging);
 	_wake_up_charger(info);
 
@@ -398,7 +398,7 @@ int charger_manager_enable_power_path(struct charger_consumer *consumer,
 		return 0;
 	}
 
-	pr_info("%s: enable power path = %d\n", __func__, en);
+	pr_debug("%s: enable power path = %d\n", __func__, en);
 	return charger_dev_enable_powerpath(chg_dev, en);
 }
 
@@ -1085,7 +1085,7 @@ static void oppo_mt6360_dump_registers(void)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 	/*This function runs for more than 400ms, so return when no charger for saving power */
@@ -1103,7 +1103,7 @@ static int oppo_mt6360_kick_wdt(void)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1121,7 +1121,7 @@ static int oppo_mt6360_hardware_init(void)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1177,7 +1177,7 @@ static int oppo_mt6360_charging_current_write_fast(int chg_curr)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1198,7 +1198,7 @@ static void oppo_mt6360_set_aicl_point(int vbatt)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1230,7 +1230,7 @@ static int oppo_mt6360_input_current_limit_write(int value)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg_debug("usb input max current limit=%d setting %02x\n", value, i);
@@ -1356,7 +1356,7 @@ static int oppo_mt6360_float_voltage_write(int vfloat_mv)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1376,7 +1376,7 @@ static int oppo_mt6360_set_termchg_current(int term_curr)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1393,7 +1393,7 @@ static int oppo_mt6360_enable_charging(void)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1413,7 +1413,7 @@ static int oppo_mt6360_disable_charging(void)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1487,7 +1487,7 @@ static int oppo_mt6360_registers_read_full(void)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1583,7 +1583,7 @@ static bool oppo_mt6360_get_vbus_status(void)
 	if (ret < 0) {
 		if (g_oppo_chip && g_oppo_chip->unwakelock_chg == 1
 				&& g_oppo_chip->charger_type != POWER_SUPPLY_TYPE_UNKNOWN) {
-			printk(KERN_ERR "[OPPO_CHG][%s]: unwakelock_chg=1, use pre status\n", __func__);
+			pr_err(KERN_ERR "[OPPO_CHG][%s]: unwakelock_chg=1, use pre status\n", __func__);
 			return pre_vbus_status;
 		} else {
 			return false;
@@ -1617,7 +1617,7 @@ static void oppo_mt_power_off(void)
 	struct tcpc_device *tcpc_dev = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
@@ -1632,7 +1632,7 @@ static void oppo_mt_power_off(void)
 			}
 		}
 	} else {
-		printk(KERN_ERR "[OPPO_CHG][%s]: ac_online is true, return!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: ac_online is true, return!\n", __func__);
 	}
 }
 
@@ -1648,7 +1648,7 @@ static int oppo_mt6360_chg_get_dyna_aicl_result(void)
 	struct charger_device *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	chg = g_oppo_chip->chgic_mtk.oppo_info->chg1_dev;
@@ -1762,7 +1762,7 @@ static void set_usbswitch_to_rxtx(struct oppo_chg_chip *chip)
 	int ret = 0;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 #ifdef ODM_HQ_EDIT
@@ -1788,7 +1788,7 @@ static void set_usbswitch_to_dpdm(struct oppo_chg_chip *chip)
 	int ret = 0;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
@@ -1830,7 +1830,7 @@ static void mt_set_chargerid_switch_val(int value)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
@@ -1865,7 +1865,7 @@ static int mt_get_chargerid_switch_val(void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 0;
 	}
 	if (is_support_chargerid_check() == false)
@@ -1883,7 +1883,7 @@ static int oppo_usb_switch_gpio_gpio_init(void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -1958,7 +1958,7 @@ static int oppo_chg_chargerid_parse_dt(struct oppo_chg_chip *chip)
 static bool oppo_shortc_check_is_gpio(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return false;
 	}
 
@@ -1972,7 +1972,7 @@ static bool oppo_shortc_check_is_gpio(struct oppo_chg_chip *chip)
 static int oppo_shortc_gpio_init(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -1997,7 +1997,7 @@ static bool oppo_chg_get_shortc_hw_gpio_status(void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return shortc_hw_status;
 	}
 
@@ -2056,7 +2056,7 @@ static int oppo_chg_shortc_hw_parse_dt(struct oppo_chg_chip *chip)
 static bool oppo_ship_check_is_gpio(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return false;
 	}
 
@@ -2069,7 +2069,7 @@ static bool oppo_ship_check_is_gpio(struct oppo_chg_chip *chip)
 static int oppo_ship_gpio_init(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -2105,7 +2105,7 @@ static void smbchg_enter_shipmode(struct oppo_chg_chip *chip)
 	int i = 0;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
@@ -2129,19 +2129,19 @@ static void smbchg_enter_shipmode(struct oppo_chg_chip *chip)
 static void enter_ship_mode_function(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
 	if (chip->enable_shipmode) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: enter_ship_mode_function\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: enter_ship_mode_function\n", __func__);
 		/*zhangchao@ODM.HQ.Charger 2020/03/09 modified for HW reset distinguish 1878 1879 and 1877*/
 		pr_err("get_project = %d ,get_Operator_Version = %d, g_cphy_dphy_gpio_value = %d\n",get_project(),get_Operator_Version(),g_cphy_dphy_gpio_value);
 		if((get_project() == 19661) && ((get_Operator_Version() == 111) || (get_Operator_Version() == 112) || (get_Operator_Version() == 113) || (get_Operator_Version() == 114) || (g_cphy_dphy_gpio_value == 1))) {
-			printk(KERN_ERR "[OPPO_CHG][%s]: MTK mt6360 !\n", __func__);
+			pr_err(KERN_ERR "[OPPO_CHG][%s]: MTK mt6360 !\n", __func__);
 			mt6360_enter_shipmode();
 		} else {
-			printk(KERN_ERR "[OPPO_CHG][%s]: 1878 HW chip !\n", __func__);
+			pr_err(KERN_ERR "[OPPO_CHG][%s]: 1878 HW chip !\n", __func__);
 			smbchg_enter_shipmode(chip);
 		}
 	}
@@ -2188,7 +2188,7 @@ static int oppo_chg_shipmode_parse_dt(struct oppo_chg_chip *chip)
 static bool oppo_usbtemp_check_is_gpio(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return false;
 	}
 
@@ -2203,7 +2203,7 @@ static bool oppo_usbtemp_check_is_support(void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return false;
 	}
 
@@ -2272,7 +2272,7 @@ static void oppo_get_usbtemp_volt(struct oppo_chg_chip *chip)
 	int usbtemp_volt = 0;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
@@ -2298,7 +2298,7 @@ static void get_usb_temp(struct oppo_chg_chip *chip)
 	int i = 0;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
@@ -2345,7 +2345,7 @@ static void oppo_get_usbtemp_volt(struct oppo_chg_chip *chip)
 	int usbtemp_volt = 0;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
@@ -2371,7 +2371,7 @@ static void get_usb_temp(struct oppo_chg_chip *chip)
 	int i = 0;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return;
 	}
 
@@ -2400,7 +2400,7 @@ static void get_usb_temp(struct oppo_chg_chip *chip)
 static bool oppo_chg_get_vbus_status(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return false;
 	}
 
@@ -2621,31 +2621,31 @@ static int oppo_chg_parse_custom_dt(struct oppo_chg_chip *chip)
 	int rc = 0;	
 	
 	if (chip == NULL) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return -EINVAL;
 	}
 
 	rc = oppo_chg_chargerid_parse_dt(chip);
 	if (rc) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chg_chargerid_parse_dt fail!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chg_chargerid_parse_dt fail!\n", __func__);
 		return -EINVAL;
 	}
 
 	rc = oppo_chg_shipmode_parse_dt(chip);
 	if (rc) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chg_shipmode_parse_dt fail!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chg_shipmode_parse_dt fail!\n", __func__);
 		return -EINVAL;
 	}
 
 	rc = oppo_chg_shortc_hw_parse_dt(chip);
 	if (rc) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chg_shortc_hw_parse_dt fail!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chg_shortc_hw_parse_dt fail!\n", __func__);
 		return -EINVAL;
 	}
 
 	rc = oppo_chg_usbtemp_parse_dt(chip);
 	if (rc) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chg_usbtemp_parse_dt fail!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chg_usbtemp_parse_dt fail!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -2698,7 +2698,7 @@ static int mt_usb_get_property(struct power_supply *psy,
 					val->intval = 0;
 				}
 				if (val->intval != 0)
-					printk(KERN_ERR "[OPPO_CHG][%s]: cc[%d]\n", __func__, val->intval);
+					pr_err(KERN_ERR "[OPPO_CHG][%s]: cc[%d]\n", __func__, val->intval);
 			} else {
 				val->intval = 0;
 			}
@@ -2749,7 +2749,7 @@ static int mt_usb_set_property(struct power_supply *psy,
 
 	switch (psp) {
 		case POWER_SUPPLY_PROP_WATER_DETECT_FEATURE:
-			printk(KERN_ERR "[OPPO_CHG][%s]: oppo_set_water_detect[%d]\n", __func__, val->intval);
+			pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_set_water_detect[%d]\n", __func__, val->intval);
 			if (val->intval == 0) {
 			#ifdef ODM_HQ_EDIT
 			/*wangtao@ODM.HQ.BSP.CHG 2019/10/17 modify kernel error*/
@@ -2882,7 +2882,7 @@ static int oppo_power_supply_init(struct oppo_chg_chip *chip)
 	struct oppo_chg_chip *mt_chg = NULL;
 
 	if (chip == NULL) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return -EINVAL;
 	}
 	mt_chg = chip;
@@ -2959,7 +2959,7 @@ err_ac_psy:
 void oppo_set_otg_switch_status(bool value)
 {
 	if (pinfo != NULL && pinfo->tcpc != NULL) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: otg switch[%d]\n", __func__, value);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: otg switch[%d]\n", __func__, value);
 		tcpm_typec_change_role(pinfo->tcpc, value ? TYPEC_ROLE_DRP : TYPEC_ROLE_SNK);
 	}
 }
@@ -2976,11 +2976,11 @@ int oppo_chg_get_mmi_status(void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: oppo_chip not ready!\n", __func__);
 		return 1;
 	}
 	if (chip->mmi_chg == 0)
-		printk(KERN_ERR "[OPPO_CHG][%s]: mmi_chg[%d]\n", __func__, chip->mmi_chg);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: mmi_chg[%d]\n", __func__, chip->mmi_chg);
 	return chip->mmi_chg;
 }
 EXPORT_SYMBOL(oppo_chg_get_mmi_status);
@@ -3009,11 +3009,11 @@ static int oppo_mt6360_pd_setup(void)
 #ifdef ODM_HQ_EDIT
 	/*wangtao@ODM.HQ.BSP.CHG 2019/10/17 modify kernel error*/
 	ret = oppo_pdc_setup(&vbus_mv, &ibus_ma);
-	printk(KERN_ERR "%s: vbus[%d], ibus[%d]\n", __func__, vbus_mv, ibus_ma);
+	pr_err(KERN_ERR "%s: vbus[%d], ibus[%d]\n", __func__, vbus_mv, ibus_ma);
 #else
 	ret = oppo_pdc_setup(&vbus_mv, &ibus_ma);
 #endif
-	//printk(KERN_ERR "%s: vbus[%d], ibus[%d]\n", __func__, vbus_mv, ibus_ma);
+	//pr_err(KERN_ERR "%s: vbus[%d], ibus[%d]\n", __func__, vbus_mv, ibus_ma);
 	return ret;
 }
 #endif /* VENDOR_EDIT */
@@ -3200,7 +3200,7 @@ static int mtk_charger_probe(struct platform_device *pdev)
 	info->init_done = true;
 	_wake_up_charger(info);
 	chr_err("%s: mtk_charger_probe sucess \n", __func__);
-	printk(KERN_ERR "[OPPO_CHG][%s]: zhangchao mtk_charger_probe sucess\n", __func__);
+	pr_err(KERN_ERR "[OPPO_CHG][%s]: zhangchao mtk_charger_probe sucess\n", __func__);
 	#endif
 
 	return 0;

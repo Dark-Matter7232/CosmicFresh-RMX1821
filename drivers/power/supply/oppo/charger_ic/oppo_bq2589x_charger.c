@@ -530,7 +530,7 @@ int bq2589x_force_dpdm(struct bq2589x *bq)
 	ret = bq2589x_update_bits(bq, BQ2589X_REG_02, 
 						BQ2589X_FORCE_DPDM_MASK, val);
 
-	pr_info("Force DPDM %s\n", !ret ?  "successfully" : "failed");
+	pr_debug("Force DPDM %s\n", !ret ?  "successfully" : "failed");
 	
 	return ret;
 
@@ -953,7 +953,7 @@ static int bq2589x_inform_charger_type(struct bq2589x *bq)
 					&propval);
 
 	if (ret < 0)
-		pr_notice("inform power supply online failed:%d\n", ret);
+		pr_err("inform power supply online failed:%d\n", ret);
 
 	propval.intval = bq->chg_type;
 
@@ -962,7 +962,7 @@ static int bq2589x_inform_charger_type(struct bq2589x *bq)
 					&propval);
 
 	if (ret < 0)
-		pr_notice("inform power supply charge type failed:%d\n", ret);
+		pr_err("inform power supply charge type failed:%d\n", ret);
 
 	return ret;
 }
@@ -976,7 +976,7 @@ static irqreturn_t bq2589x_irq_handler(int irq, void *data)
 	enum charger_type prev_chg_type;
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
-	pr_notice("bq2589x_irq_handler\n");
+	pr_err("bq2589x_irq_handler\n");
 	ret = bq2589x_read_byte(bq, BQ2589X_REG_0B, &reg_val);
 	if (ret)
 		return IRQ_HANDLED;
@@ -986,7 +986,7 @@ static irqreturn_t bq2589x_irq_handler(int irq, void *data)
 	bq->power_good = !!(reg_val & BQ2589X_PG_STAT_MASK);
 
 	if (!prev_pg && bq->power_good)
-		pr_notice("adapter/usb inserted\n");
+		pr_err("adapter/usb inserted\n");
 	else if (prev_pg && !bq->power_good){
 		bq->pre_current_ma = -1;
 		bq->hvdcp_can_enabled = false;
@@ -998,7 +998,7 @@ static irqreturn_t bq2589x_irq_handler(int irq, void *data)
 		chip->pd_chging = false;
 		chip->qc_chging = false;
 		bq2589x_inform_charger_type(bq);
-		pr_notice("adapter/usb removed\n");
+		pr_err("adapter/usb removed\n");
 		return IRQ_HANDLED;
     }
 	prev_chg_type = bq->chg_type;
@@ -1028,7 +1028,7 @@ static int bq2589x_register_interrupt(struct device_node *np,struct bq2589x *bq)
 	int ret = 0;
 	
 	bq->irq = irq_of_parse_and_map(np, 0);
-	pr_info("irq = %d\n", bq->irq);
+	pr_debug("irq = %d\n", bq->irq);
 
 	ret = devm_request_threaded_irq(bq->dev, bq->irq, NULL,
 					bq2589x_irq_handler,
@@ -1430,7 +1430,7 @@ static int bq2589x_enable_chgdet(struct charger_device *chg_dev, bool en)
 	u8 val;
 	struct bq2589x *bq = dev_get_drvdata(&chg_dev->dev);
 	
-	pr_notice("bq2589x_enable_chgdet:%d\n",en);
+	pr_err("bq2589x_enable_chgdet:%d\n",en);
 	bq->chg_det_enable = en;
 	if (en)
 		Charger_Detect_Init();
@@ -1569,7 +1569,7 @@ static int bq2589x_set_pep20_current_pattern(struct charger_device *chg_dev,
 			cptime[j][0] = PEOFFTIME;
 			cptime[j][1] = dtime(j);
 			if (cptime[j][1] < 30 || cptime[j][1] > 65) {
-				pr_info(
+				pr_debug(
 					"charging_set_ta20_current_pattern fail1: idx:%d target:%d actual:%d\n",
 					i, PEOFFTIME, cptime[j][1]);
 				return -EIO;
@@ -1582,7 +1582,7 @@ static int bq2589x_set_pep20_current_pattern(struct charger_device *chg_dev,
 			cptime[j][0] = PEONTIME;
 			cptime[j][1] = dtime(j);
 			if (cptime[j][1] < 90 || cptime[j][1] > 115) {
-				pr_info(
+				pr_debug(
 					"charging_set_ta20_current_pattern fail2: idx:%d target:%d actual:%d\n",
 					i, PEOFFTIME, cptime[j][1]);
 				return -EIO;
@@ -1597,7 +1597,7 @@ static int bq2589x_set_pep20_current_pattern(struct charger_device *chg_dev,
 			cptime[j][0] = PEONTIME;
 			cptime[j][1] = dtime(j);
 			if (cptime[j][1] < 90 || cptime[j][1] > 115) {
-				pr_info(
+				pr_debug(
 					"charging_set_ta20_current_pattern fail3: idx:%d target:%d actual:%d\n",
 					i, PEOFFTIME, cptime[j][1]);
 				return -EIO;
@@ -1611,7 +1611,7 @@ static int bq2589x_set_pep20_current_pattern(struct charger_device *chg_dev,
 			cptime[j][0] = PEOFFTIME;
 			cptime[j][1] = dtime(j);
 			if (cptime[j][1] < 30 || cptime[j][1] > 65) {
-				pr_info(
+				pr_debug(
 					"charging_set_ta20_current_pattern fail4: idx:%d target:%d actual:%d\n",
 					i, PEOFFTIME, cptime[j][1]);
 				return -EIO;
@@ -1627,7 +1627,7 @@ static int bq2589x_set_pep20_current_pattern(struct charger_device *chg_dev,
 	cptime[j][0] = 160;
 	cptime[j][1] = dtime(j);
 	if (cptime[j][1] < 150 || cptime[j][1] > 240) {
-		pr_info(
+		pr_debug(
 			"charging_set_ta20_current_pattern fail5: idx:%d target:%d actual:%d\n",
 			i, PEOFFTIME, cptime[j][1]);
 		return -EIO;
@@ -1640,13 +1640,13 @@ static int bq2589x_set_pep20_current_pattern(struct charger_device *chg_dev,
 	//bq25890_set_iinlim(0xc);
 	bq2589x_set_input_current_limit(bq, 700);
 
-	pr_info(
+	pr_debug(
 	"[charging_set_ta20_current_pattern]:chr_vol:%d bit:%d time:%3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d!!\n",
 	chr_vol, value,
 	cptime[1][0], cptime[2][0], cptime[3][0], cptime[4][0], cptime[5][0],
 	cptime[6][0], cptime[7][0], cptime[8][0], cptime[9][0], cptime[10][0], cptime[11][0]);
 
-	pr_info(
+	pr_debug(
 	"[charging_set_ta20_current_pattern2]:chr_vol:%d bit:%d time:%3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d!!\n",
 	chr_vol, value,
 	cptime[1][1], cptime[2][1], cptime[3][1], cptime[4][1], cptime[5][1],
@@ -2528,7 +2528,7 @@ static int bq2589x_charger_probe(struct i2c_client *client,
 	}
 
 	if (bq->part_no != *(int *)match->data)
-		pr_info("part no mismatch, hw:%s, devicetree:%d\n",
+		pr_debug("part no mismatch, hw:%s, devicetree:%d\n",
 			pn_str[bq->part_no], *(int *) match->data);
 
 	bq->platform_data = bq2589x_parse_dt(node, bq);

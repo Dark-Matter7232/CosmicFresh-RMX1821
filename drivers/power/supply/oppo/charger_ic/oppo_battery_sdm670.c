@@ -114,7 +114,7 @@ int oppo_set_dpdm_status(int status)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: g_oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: g_oppo_chip not ready!\n", __func__);
 		return rc;
 	}
 
@@ -308,7 +308,7 @@ module_param_named(
 #define smblib_dbg(chg, reason, fmt, ...)			\
 		do {							\
 			if (*chg->debug_mask & (reason))		\
-				pr_info("%s: %s: " fmt, chg->name,	\
+				pr_debug("%s: %s: " fmt, chg->name,	\
 					__func__, ##__VA_ARGS__);	\
 			else						\
 				pr_debug("%s: %s: " fmt, chg->name, \
@@ -869,7 +869,7 @@ static const struct apsd_result *smblib_update_usb_type(struct smb_charger *chg)
 		chg->real_charger_type = POWER_SUPPLY_TYPE_USB_PD;
 #ifdef VENDOR_EDIT
 /* tongfeng.huang@BSP.CHG.Basic, 2018/09/29, sjc Add for charging */
-		printk(KERN_ERR "!!!smblib_update_usb_type: APSD=%s PD=%d\n", apsd_result->name, chg->pd_active);
+		pr_err(KERN_ERR "!!!smblib_update_usb_type: APSD=%s PD=%d\n", apsd_result->name, chg->pd_active);
 #endif
 	} else {
 		/*
@@ -1052,7 +1052,7 @@ void smblib_suspend_on_debug_battery(struct smb_charger *chg)
 	vote(chg->usb_icl_votable, DEBUG_BOARD_VOTER, val.intval, 0);
 	vote(chg->dc_suspend_votable, DEBUG_BOARD_VOTER, val.intval, 0);
 	if (val.intval)
-		pr_info("Input suspended: Fake battery\n");
+		pr_debug("Input suspended: Fake battery\n");
 }
 
 int smblib_rerun_apsd_if_required(struct smb_charger *chg)
@@ -2835,7 +2835,7 @@ int smblib_get_prop_usb_online(struct smb_charger *chg,
 		val->intval = false;
 #ifdef VENDOR_EDIT
 /* Jianchao.Shi@BSP.CHG.Basic, 2017/04/04, sjc Add for debug */
-		printk(KERN_ERR "smblib_get_prop_usb_online false\n");
+		pr_err(KERN_ERR "smblib_get_prop_usb_online false\n");
 #endif
 		return rc;
 	}
@@ -3904,7 +3904,7 @@ void smblib_usb_plugin_hard_reset_locked(struct smb_charger *chg)
 
 #ifdef VENDOR_EDIT
 /* Jianchao.Shi@BSP.CHG.Basic, 2016/12/20, sjc Add for charging */
-	printk(KERN_ERR "!!!!! smblib_usb_plugin_hard_reset_locked: [%d]\n", vbus_rising);
+	pr_err(KERN_ERR "!!!!! smblib_usb_plugin_hard_reset_locked: [%d]\n", vbus_rising);
 #endif
 
 	if (vbus_rising) {
@@ -3957,7 +3957,7 @@ void smblib_usb_plugin_hard_reset_locked(struct smb_charger *chg)
 #ifdef VENDOR_EDIT
 /* Jianchao.Shi@BSP.CHG.Basic, 2018/07/13, sjc Add for fake typec */
 	if (chg->fake_typec_insertion == true && !vbus_rising) {
-		printk(KERN_ERR "!!! %s: fake typec unplug\n", __func__);
+		pr_err(KERN_ERR "!!! %s: fake typec unplug\n", __func__);
 		chg->fake_typec_insertion = false;
 		chg->typec_mode = POWER_SUPPLY_TYPEC_NONE;
 	}
@@ -3998,7 +3998,7 @@ void smblib_usb_plugin_locked(struct smb_charger *chg)
 
 #ifdef VENDOR_EDIT
 /* Jianchao.Shi@BSP.CHG.Basic, 2016/12/20, sjc Add for charging */
-	printk(KERN_ERR "!!!!! smblib_usb_plugin_locked: [%d]\n", vbus_rising);
+	pr_err(KERN_ERR "!!!!! smblib_usb_plugin_locked: [%d]\n", vbus_rising);
 #endif
 
 	if (vbus_rising) {
@@ -4088,7 +4088,7 @@ void smblib_usb_plugin_locked(struct smb_charger *chg)
 #ifdef VENDOR_EDIT
 /* Jianchao.Shi@BSP.CHG.Basic, 2018/07/13, sjc Add for fake typec */
 	if (chg->fake_typec_insertion == true && !vbus_rising) {
-		printk(KERN_ERR "!!! %s: fake typec unplug\n", __func__);
+		pr_err(KERN_ERR "!!! %s: fake typec unplug\n", __func__);
 		chg->fake_typec_insertion = false;
 		chg->typec_mode = POWER_SUPPLY_TYPEC_NONE;
 	}
@@ -4116,7 +4116,7 @@ irqreturn_t smblib_handle_usb_plugin(int irq, void *data)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 	if ((chg->typec_mode == POWER_SUPPLY_TYPEC_SINK || chg->typec_mode == POWER_SUPPLY_TYPEC_SINK_POWERED_CABLE)
 		&& chip->vbatt_num == 2 ) {
-		pr_info("%s:chg->typec_mode = sink return!\n", __func__);
+		pr_debug("%s:chg->typec_mode = sink return!\n", __func__);
 		return IRQ_HANDLED;
 	}
 #endif/*VENDOR_EDIT*/
@@ -4415,7 +4415,7 @@ static void smblib_handle_apsd_done(struct smb_charger *chg, bool rising)
 
 #ifdef VENDOR_EDIT
 	/* tongfeng.Huang@BSP.CHG.Basic, 2018/07/05, sjc Add for charging */
-	printk(KERN_ERR "%s: !!!fg_oppo_set_input_current[%d]\n", __FUNCTION__, fg_oppo_set_input_current);
+	pr_err(KERN_ERR "%s: !!!fg_oppo_set_input_current[%d]\n", __FUNCTION__, fg_oppo_set_input_current);
 	if(fg_oppo_set_input_current == false){
 		vote(chg->usb_icl_votable, USB_PSY_VOTER, true, 500000); //vote 500mA 
 	}
@@ -4451,7 +4451,7 @@ static void smblib_handle_apsd_done(struct smb_charger *chg, bool rising)
 	}
 #ifdef VENDOR_EDIT
 /* Jianchao.Shi@BSP.CHG.Basic, 2017/01/25, sjc Add for charging */
-	printk(KERN_ERR "!!!IRQ: apsd-done rising; %s detected\n", apsd_result->name);
+	pr_err(KERN_ERR "!!!IRQ: apsd-done rising; %s detected\n", apsd_result->name);
 #endif
 	smblib_dbg(chg, PR_INTERRUPT, "IRQ: apsd-done rising; %s detected\n",
 		   apsd_result->name);
@@ -4472,7 +4472,7 @@ irqreturn_t smblib_handle_usb_source_change(int irq, void *data)
 
 	if ((chg->typec_mode == POWER_SUPPLY_TYPEC_SINK || chg->typec_mode == POWER_SUPPLY_TYPEC_SINK_POWERED_CABLE)
 		&& chip->vbatt_num == 2 ) {
-		pr_info("%s:chg->typec_mode = sink return!\n", __func__);
+		pr_debug("%s:chg->typec_mode = sink return!\n", __func__);
 		return IRQ_HANDLED;
 	}
 #endif/*VENDOR_EDIT*/
@@ -5001,7 +5001,7 @@ static void smblib_handle_typec_cc_state_change(struct smb_charger *chg)
 #ifdef VENDOR_EDIT//Fanhong.Kong@ProDrv.CHG,add 2018/06/02 for SVOOC OTG
 	//if ((chg->typec_mode == POWER_SUPPLY_TYPEC_SINK || chg->typec_mode == POWER_SUPPLY_TYPEC_SINK_POWERED_CABLE)
 		//&& chip->vbatt_num == 2 ) {
-		//pr_info("%s: chg->typec_mode = SINK,Disable APSD!\n", __func__);
+		//pr_debug("%s: chg->typec_mode = SINK,Disable APSD!\n", __func__);
 		///vote(chg->apsd_disable_votable, SVOOC_OTG_VOTER, true, 0);
 	//}
 #endif/*VENDOR_EDIT*/
@@ -5028,7 +5028,7 @@ static void smblib_handle_typec_cc_state_change(struct smb_charger *chg)
 			&& chg->typec_mode <= POWER_SUPPLY_TYPEC_POWERED_CABLE_ONLY);
 	if (dfp_status ^ current_status) {
 		dfp_status = current_status;
-		printk(KERN_ERR "!!!!! smblib_handle_typec_cc_state_change: [%d], mode[%d]\n", dfp_status, chg->typec_mode);
+		pr_err(KERN_ERR "!!!!! smblib_handle_typec_cc_state_change: [%d], mode[%d]\n", dfp_status, chg->typec_mode);
 	}
 #endif
 
@@ -5410,7 +5410,7 @@ static void smblib_uusb_otg_work(struct work_struct *work)
 /* Jianchao.Shi@BSP.CHG.Basic, 2017/03/01, sjc Add for charging */
 	if (otg_status ^ otg) {
 		otg_status = otg;
-		printk(KERN_ERR "!!!!! smblib_handle_usb_typec_change_for_uusb: otg status [%d]\n", otg_status);
+		pr_err(KERN_ERR "!!!!! smblib_handle_usb_typec_change_for_uusb: otg status [%d]\n", otg_status);
 	}
 #endif
 	extcon_set_cable_state_(chg->extcon, EXTCON_USB_HOST, otg);
@@ -5801,14 +5801,14 @@ static int oppo_otg_get_power_role(void)
 	union power_supply_propval val = {0,};
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return POWER_SUPPLY_TYPEC_PR_NONE;
 	}
 	chg = &g_oppo_chip->pmic_spmi.smb2_chip->chg;
 
 	rc = smblib_get_prop_typec_power_role(chg, &val);
 	if (rc < 0) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: Couldn't get typec power role, rc=%d\n", __func__, rc);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: Couldn't get typec power role, rc=%d\n", __func__, rc);
 		return POWER_SUPPLY_TYPEC_PR_DUAL;
 	}
 	return val.intval;
@@ -5820,7 +5820,7 @@ static void typec_disable_cmd_work(struct work_struct *work)
 	struct smb_charger *chg = container_of(work, struct smb_charger, typec_disable_cmd_work.work);
 
 	if (smblib_get_prop_typec_mode(chg) != POWER_SUPPLY_TYPEC_NONE) {
-		printk(KERN_ERR "!!! %s: active t-c module\n", __func__);
+		pr_err(KERN_ERR "!!! %s: active t-c module\n", __func__);
 		return;
 	}
 
@@ -5834,11 +5834,11 @@ static void typec_disable_cmd_work(struct work_struct *work)
 	if (rc < 0)
 		smblib_err(chg, "Couldn't write TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG rc=%d\n", rc);
 
-	printk(KERN_ERR "!!! %s: re-active t-c module\n", __func__);
+	pr_err(KERN_ERR "!!! %s: re-active t-c module\n", __func__);
 
 	msleep(200);
 	if (smblib_get_prop_typec_mode(chg) == POWER_SUPPLY_TYPEC_NONE) {
-		printk(KERN_ERR "!!! %s: fake typec plug\n", __func__);
+		pr_err(KERN_ERR "!!! %s: fake typec plug\n", __func__);
 		rc = smblib_masked_write(chg, TYPE_C_CFG_REG, APSD_START_ON_CC_BIT, 0);
 		if (rc < 0)
 			smblib_err(chg, "Couldn't enable APSD_START_ON_CC rc=%d\n", rc);
@@ -5997,12 +5997,12 @@ static void oppo_chg_monitor_work(struct work_struct *work)
 	if (counts >= (chip->batt_full ? 8 : 3)) {//because rechg counts=6
 		rc = smblib_read(chg, BATTERY_CHARGER_STATUS_8_REG, &stat);
 		if (rc < 0) {
-			printk(KERN_ERR "oppo_chg_monitor_work: Couldn't get BATTERY_CHARGER_STATUS_8_REG status rc=%d\n", rc);
+			pr_err(KERN_ERR "oppo_chg_monitor_work: Couldn't get BATTERY_CHARGER_STATUS_8_REG status rc=%d\n", rc);
 			goto rerun_work;
 		}
 		if (get_client_vote(chg->usb_icl_votable, BOOST_BACK_VOTER) == 0
 				&& get_effective_result(chg->usb_icl_votable) <= USBIN_25MA) {
-			printk(KERN_ERR "oppo_chg_monitor_work: boost back\n");
+			pr_err(KERN_ERR "oppo_chg_monitor_work: boost back\n");
 			if (chg->wa_flags & BOOST_BACK_WA)
 				vote(chg->usb_icl_votable, BOOST_BACK_VOTER, false, 0);
 		}
@@ -6012,25 +6012,25 @@ static void oppo_chg_monitor_work(struct work_struct *work)
 		}
 		if (stat & PRE_TERM_BIT) {
 			usb_online_status = true;
-			printk(KERN_ERR "oppo_chg_monitor_work: PRE_TERM_BIT is set[0x%x], clear it\n", stat);
+			pr_err(KERN_ERR "oppo_chg_monitor_work: PRE_TERM_BIT is set[0x%x], clear it\n", stat);
 			rc = smblib_masked_write(chg, USBIN_CMD_IL_REG, USBIN_SUSPEND_BIT, 1);
 			if (rc < 0) {
-				printk(KERN_ERR "oppo_chg_monitor_work: Couldn't set USBIN_SUSPEND_BIT rc=%d\n", rc);
+				pr_err(KERN_ERR "oppo_chg_monitor_work: Couldn't set USBIN_SUSPEND_BIT rc=%d\n", rc);
 				goto rerun_work;
 			}
 			msleep(50);
 			rc = smblib_masked_write(chg, USBIN_CMD_IL_REG, USBIN_SUSPEND_BIT, 0);
 			if (rc < 0) {
-				printk(KERN_ERR "oppo_chg_monitor_work: Couldn't clear USBIN_SUSPEND_BIT rc=%d\n", rc);
+				pr_err(KERN_ERR "oppo_chg_monitor_work: Couldn't clear USBIN_SUSPEND_BIT rc=%d\n", rc);
 				goto rerun_work;
 			}
 			msleep(10);
 			rc = smblib_masked_write(chg, CMD_HVDCP_2_REG, RESTART_AICL_BIT, RESTART_AICL_BIT);
 			if (rc < 0) {
-				printk(KERN_ERR "oppo_chg_monitor_work: Couldn't set RESTART_AICL_BIT rc=%d\n", rc);
+				pr_err(KERN_ERR "oppo_chg_monitor_work: Couldn't set RESTART_AICL_BIT rc=%d\n", rc);
 				goto rerun_work;
 			}
-			printk(KERN_ERR "oppo_chg_monitor_work: ichg[%d], fv[%d]\n", chip->icharging, oppo_chg_get_fv_monitor(chip));
+			pr_err(KERN_ERR "oppo_chg_monitor_work: ichg[%d], fv[%d]\n", chip->icharging, oppo_chg_get_fv_monitor(chip));
 		}
 		counts = 0;
 	}
@@ -6381,7 +6381,7 @@ static int oppo_chg_2uart_pinctrl_init(struct oppo_chg_chip *chip)
 	struct smb_charger *chg = NULL;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -6420,7 +6420,7 @@ static int oppo_chg_set_2uart_pinctrl_chgID(struct oppo_chg_chip *chip)
 	struct smb_charger *chg = NULL;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -6443,7 +6443,7 @@ static int oppo_chg_set_2uart_pinctrl_default(struct oppo_chg_chip *chip)
 	struct smb_charger *chg = NULL;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -6599,7 +6599,7 @@ int smbchg_get_chargerid_switch_val(void)
 static int oppo_ship_gpio_init(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -6627,7 +6627,7 @@ static int oppo_ship_gpio_init(struct oppo_chg_chip *chip)
 static bool oppo_ship_check_is_gpio(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return false;
 	}
 
@@ -6643,7 +6643,7 @@ static void smbchg_enter_shipmode(struct oppo_chg_chip *chip)
 	int i = 0;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return;
 	}
 
@@ -6671,7 +6671,7 @@ static void smbchg_enter_shipmode(struct oppo_chg_chip *chip)
 static int oppo_shortc_gpio_init(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -6692,7 +6692,7 @@ static int oppo_shortc_gpio_init(struct oppo_chg_chip *chip)
 static bool oppo_shortc_check_is_gpio(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return false;
 	}
 
@@ -6709,7 +6709,7 @@ static bool oppo_chg_get_shortc_hw_gpio_status(void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 	
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return shortc_hw_status;
 	}
 
@@ -6735,7 +6735,7 @@ static int oppo_ccdetect_gpio_init(struct oppo_chg_chip *chip)
 	struct smb_charger *chg = NULL;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return -EINVAL;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
@@ -6773,13 +6773,13 @@ static void oppo_ccdetect_irq_init(struct oppo_chg_chip *chip)
 	struct smb_charger *chg = NULL;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
 
 	chg->ccdetect_irq = gpio_to_irq(chg->ccdetect_gpio);
-    printk(KERN_ERR "[OPPO_CHG][%s]: chg->ccdetect_irq[%d]!\n", __func__, chg->ccdetect_irq);
+    pr_err(KERN_ERR "[OPPO_CHG][%s]: chg->ccdetect_irq[%d]!\n", __func__, chg->ccdetect_irq);
 }
 
 static void oppo_ccdetect_enable(void)
@@ -6792,7 +6792,7 @@ static void oppo_ccdetect_disable(void)
 	bool value = false;
 	if(oppo_ccdetect_support_check() == OPPO_SUPPORT_CCDETECT_IN_FTM_MODE)
 	{
-		printk(KERN_ERR "[OPPO_CHG][%s]: ccdetect is in FTM mode, enable otg!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: ccdetect is in FTM mode, enable otg!\n", __func__);
 		value = true;
 	}
 	if (g_oppo_chip && g_oppo_chip->vbatt_num == 2) {
@@ -6809,14 +6809,14 @@ static int oppo_ccdetect_get_power_role(void)
 	union power_supply_propval val = {0,};
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return POWER_SUPPLY_TYPEC_PR_NONE;
 	}
 	chg = &g_oppo_chip->pmic_spmi.smb2_chip->chg;
 
 	rc = smblib_get_prop_typec_power_role(chg, &val);
 	if (rc < 0) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: Couldn't get typec power role, rc=%d\n", __func__, rc);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: Couldn't get typec power role, rc=%d\n", __func__, rc);
 		return POWER_SUPPLY_TYPEC_PR_DUAL;
 	}
 	return val.intval;
@@ -6827,7 +6827,7 @@ static bool oppo_ccdetect_check_is_gpio(struct oppo_chg_chip *chip)
 	int boot_mode = get_boot_mode();
 
     if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return false;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
@@ -6849,7 +6849,7 @@ int oppo_ccdetect_support_check(void)
 	int boot_mode = get_boot_mode();
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: g_oppo_chip not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: g_oppo_chip not ready!\n", __func__);
 		return OPPO_NOT_SUPPORT_CCDETECT;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
@@ -6870,7 +6870,7 @@ static void oppo_ccdetect_irq_register(struct oppo_chg_chip *chip)
 	struct smb_charger *chg = NULL;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
@@ -6881,7 +6881,7 @@ static void oppo_ccdetect_irq_register(struct oppo_chg_chip *chip)
 	if (ret < 0) {
 		chg_err("Unable to request ccdetect-change irq: %d\n", ret);
 	}
-    printk(KERN_ERR "%s: !!!!! irq register\n", __FUNCTION__);
+    pr_err(KERN_ERR "%s: !!!!! irq register\n", __FUNCTION__);
 
 	ret = enable_irq_wake(chg->ccdetect_irq);
 	if (ret != 0) {
@@ -6896,7 +6896,7 @@ static void oppo_ccdetect_irq_register(struct oppo_chg_chip *chip)
 static bool oppo_usbtemp_check_is_gpio(struct oppo_chg_chip *chip)
 {
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return false;
 	}
 
@@ -7365,7 +7365,7 @@ static bool oppo_get_otg_switch_status(void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return false;
 	}
 	if (oppo_ccdetect_check_is_gpio(chip) != true) {
@@ -7388,7 +7388,7 @@ static int oppo_get_otg_online_status(void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return false;
 	}
 
@@ -7397,7 +7397,7 @@ static int oppo_get_otg_online_status(void)
 	if (oppo_ccdetect_check_is_gpio(chip) == true) {
 		level = gpio_get_value(chg->ccdetect_gpio);
 		if (level != gpio_get_value(chg->ccdetect_gpio)) {
-			printk(KERN_ERR "[OPPO_CHG][%s]: ccdetect_gpio is unstable, try again...\n", __func__);
+			pr_err(KERN_ERR "[OPPO_CHG][%s]: ccdetect_gpio is unstable, try again...\n", __func__);
 			usleep_range(5000, 5100);
 			level = gpio_get_value(chg->ccdetect_gpio);
 		}
@@ -7409,7 +7409,7 @@ static int oppo_get_otg_online_status(void)
 
 	ret = power_supply_get_property(chg->usb_psy, POWER_SUPPLY_PROP_TYPEC_MODE, &val);
 	if (ret) {
-		printk(KERN_ERR "%s: Unable to read USB TYPEC_MODE\n", __func__);
+		pr_err(KERN_ERR "%s: Unable to read USB TYPEC_MODE\n", __func__);
 		val.intval = 0;
 	}
 	if (val.intval >= POWER_SUPPLY_TYPEC_SINK
@@ -7423,7 +7423,7 @@ static int oppo_get_otg_online_status(void)
 	if ((pre_level ^ level) || (pre_typec_otg ^ typec_otg)) {
 		pre_level = level;
 		pre_typec_otg = typec_otg;
-		printk(KERN_ERR "[OPPO_CHG][%s]: gpio[%s], c-otg[%d], otg_online[%d]\n",
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: gpio[%s], c-otg[%d], otg_online[%d]\n",
 				__func__, level ? "H" : "L", typec_otg, online);
 	}
 
@@ -7439,11 +7439,11 @@ static void oppo_set_otg_switch_status(bool value)
 
 	if(oppo_ccdetect_support_check() == OPPO_SUPPORT_CCDETECT_IN_FTM_MODE)
 	{
-		printk(KERN_ERR "[OPPO_CHG][%s]: ccdetect is in FTM mode, enable otg!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: ccdetect is in FTM mode, enable otg!\n", __func__);
 		value = true;
 	}
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
@@ -7452,7 +7452,7 @@ static void oppo_set_otg_switch_status(bool value)
 	if (oppo_ccdetect_check_is_gpio(chip) == true) {
 		level = gpio_get_value(chg->ccdetect_gpio);
 		if (level != 1) {
-			printk(KERN_ERR "[OPPO_CHG][%s]: gpio[%s], should set, return\n", __func__, level ? "H" : "L");
+			pr_err(KERN_ERR "[OPPO_CHG][%s]: gpio[%s], should set, return\n", __func__, level ? "H" : "L");
 			return;
 		}
 	} else {
@@ -7468,7 +7468,7 @@ static void oppo_set_otg_switch_status(bool value)
 		oppo_set_dpdm_status(POWER_SUPPLY_TYPEC_PLUGOUT);
 		oppo_ccdetect_disable();
 	}
-	printk(KERN_ERR "[OPPO_CHG][%s]: otg_switch=%d, otg_online=%d\n",
+	pr_err(KERN_ERR "[OPPO_CHG][%s]: otg_switch=%d, otg_online=%d\n",
 			__func__, chip->otg_switch, chip->otg_online);
 }
 #endif /* VENDOR_EDIT */
@@ -8820,7 +8820,7 @@ static void otg_enable_pmic_id_value (void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
@@ -8829,14 +8829,14 @@ static void otg_enable_pmic_id_value (void)
 	rc = smblib_masked_write(chg, TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG,
 			TYPEC_POWER_ROLE_CMD_MASK, 0x0);//bit[2:0]=0
 	if (rc < 0) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: Couldn't clear 0x1368[0] rc=%d\n", __func__, rc);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: Couldn't clear 0x1368[0] rc=%d\n", __func__, rc);
 	}
 
 	rc = smblib_read(chg, TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG, &stat);
 	if (rc < 0) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: Couldn't read 0x1368 rc=%d\n", __func__, rc);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: Couldn't read 0x1368 rc=%d\n", __func__, rc);
 	} else {
-		printk(KERN_ERR "[OPPO_CHG][%s]: reg0x1368[0x%x], bit[2:0]=0(DRP)\n", __func__, stat);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: reg0x1368[0x%x], bit[2:0]=0(DRP)\n", __func__, stat);
 	}
 }
 
@@ -8848,7 +8848,7 @@ static void otg_disable_pmic_id_value (void)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: smb2_chg not ready!\n", __func__);
 		return;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
@@ -8857,14 +8857,14 @@ static void otg_disable_pmic_id_value (void)
 	rc = smblib_masked_write(chg, TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG,
 			TYPEC_POWER_ROLE_CMD_MASK, UFP_EN_CMD_BIT);//bit[2:0]=0x4
 	if (rc < 0) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: Couldn't set 0x1368[2] rc=%d\n", __func__, rc);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: Couldn't set 0x1368[2] rc=%d\n", __func__, rc);
 	}
 
 	rc = smblib_read(chg, TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG, &stat);
 	if (rc < 0) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: Couldn't read 0x1368 rc=%d\n", __func__, rc);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: Couldn't read 0x1368 rc=%d\n", __func__, rc);
 	} else {
-		printk(KERN_ERR "[OPPO_CHG][%s]: reg0x1368[0x%x], bit[2:0]=4(UFP)\n", __func__, stat);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: reg0x1368[0x%x], bit[2:0]=4(UFP)\n", __func__, stat);
 	}
 
 }
@@ -9289,7 +9289,7 @@ static int smb2_post_init(struct smb2 *chip)
         level = gpio_get_value(chg->ccdetect_gpio);
         usleep_range(2000, 2100);
         if (level != gpio_get_value(chg->ccdetect_gpio)) {
-            printk(KERN_ERR "[OPPO_CHG][%s]: ccdetect_gpio is unstable, try again...\n", __func__);
+            pr_err(KERN_ERR "[OPPO_CHG][%s]: ccdetect_gpio is unstable, try again...\n", __func__);
             usleep_range(10000, 11000);
             level = gpio_get_value(chg->ccdetect_gpio);
         }
@@ -9776,13 +9776,13 @@ static ssize_t dump_registers_mask_write(struct file *file, const char __user *b
 	char mask[16];
 
 	if (copy_from_user(&mask, buff, count)) {
-		printk(KERN_ERR "dump_registers_mask_write error.\n");
+		pr_err(KERN_ERR "dump_registers_mask_write error.\n");
 		return -EFAULT;
 	}
 
 	if (strncmp(mask, "dump808", 7) == 0) {
 		d_reg_mask = true;
-		printk(KERN_ERR "dump registers mask enable.\n");
+		pr_err(KERN_ERR "dump registers mask enable.\n");
 	} else {
 		d_reg_mask = false;
 		return -EFAULT;
@@ -9799,7 +9799,7 @@ static const struct file_operations dump_registers_mask_fops = {
 static void init_proc_dump_registers_mask(void)
 {
 	if (!proc_create("d_reg_mask", S_IWUSR | S_IWGRP | S_IWOTH, NULL, &dump_registers_mask_fops)) {
-		printk(KERN_ERR "proc_create dump_registers_mask_fops fail\n");
+		pr_err(KERN_ERR "proc_create dump_registers_mask_fops fail\n");
 	}
 }
 #endif /* VENDOR_EDIT */
@@ -9945,7 +9945,7 @@ static bool oppo_chg_is_suspend_status(void)
 
 	rc = smblib_read(chg, POWER_PATH_STATUS_REG, &stat);
 	if (rc < 0) {
-		printk(KERN_ERR "oppo_chg_is_suspend_status: Couldn't read POWER_PATH_STATUS rc=%d\n", rc);
+		pr_err(KERN_ERR "oppo_chg_is_suspend_status: Couldn't read POWER_PATH_STATUS rc=%d\n", rc);
 		return false;
 	}
 
@@ -9964,12 +9964,12 @@ static void oppo_chg_clear_suspend(void)
 
 	rc = smblib_masked_write(chg, USBIN_CMD_IL_REG, USBIN_SUSPEND_BIT, 1);
 	if (rc < 0) {
-		printk(KERN_ERR "oppo_chg_monitor_work: Couldn't set USBIN_SUSPEND_BIT rc=%d\n", rc);
+		pr_err(KERN_ERR "oppo_chg_monitor_work: Couldn't set USBIN_SUSPEND_BIT rc=%d\n", rc);
 	}
 	msleep(50);
 	rc = smblib_masked_write(chg, USBIN_CMD_IL_REG, USBIN_SUSPEND_BIT, 0);
 	if (rc < 0) {
-		printk(KERN_ERR "oppo_chg_monitor_work: Couldn't clear USBIN_SUSPEND_BIT rc=%d\n", rc);
+		pr_err(KERN_ERR "oppo_chg_monitor_work: Couldn't clear USBIN_SUSPEND_BIT rc=%d\n", rc);
 	}
 }
 
@@ -10905,26 +10905,26 @@ int pm660l_bob_regulator_get_mode(unsigned int *mode)
 	struct smb_charger *chg = NULL;
 
 	if (!g_oppo_chip) {
-		printk(KERN_ERR "pm660l_bob_regulator_get_mode: g_oppo_chip NULL\n");
+		pr_err(KERN_ERR "pm660l_bob_regulator_get_mode: g_oppo_chip NULL\n");
 		return -1;
 	}
 	chg = &g_oppo_chip->pmic_spmi.smb2_chip->chg;
 
 	if (!chg || !chg->pm660l_bob_reg) {
-		printk(KERN_ERR "%s: pm660l_bob_reg NULL\n", __func__);
+		pr_err(KERN_ERR "%s: pm660l_bob_reg NULL\n", __func__);
 		return -1;
 	}
 
 	rc = regulator_enable(chg->pm660l_bob_reg);
 	if (rc < 0) {
-		printk(KERN_ERR "%s: Couldn't enable regulator rc=%d\n", __func__, rc);
+		pr_err(KERN_ERR "%s: Couldn't enable regulator rc=%d\n", __func__, rc);
 		return -1;
 	}
 
 	bob_mode = regulator_get_mode(chg->pm660l_bob_reg);
 	if (bob_mode != REGULATOR_MODE_FAST && bob_mode != REGULATOR_MODE_NORMAL
 			&& bob_mode != REGULATOR_MODE_IDLE && bob_mode != REGULATOR_MODE_STANDBY) {
-		printk(KERN_ERR "%s: Couldn't get regulator mode=%d\n", __func__, bob_mode);
+		pr_err(KERN_ERR "%s: Couldn't get regulator mode=%d\n", __func__, bob_mode);
 		*mode = 0;
 		goto err;
 	}
@@ -10933,7 +10933,7 @@ int pm660l_bob_regulator_get_mode(unsigned int *mode)
 err:
 	rc = regulator_disable(chg->pm660l_bob_reg);
 	if (rc < 0) {
-		printk(KERN_ERR "%s: Couldn't disable regulator rc=%d\n", __func__, rc);
+		pr_err(KERN_ERR "%s: Couldn't disable regulator rc=%d\n", __func__, rc);
 		return -1;
 	}
 
@@ -10951,23 +10951,23 @@ int pm660l_bob_regulator_set_mode(unsigned int mode)
 	struct oppo_chg_chip *chip = g_oppo_chip;
 
 	if (!chip) {
-		printk(KERN_ERR "%s: chip NULL\n", __func__);
+		pr_err(KERN_ERR "%s: chip NULL\n", __func__);
 		return -1;
 	}
 	chg = &chip->pmic_spmi.smb2_chip->chg;
 
 	if (!chg || !chg->pm660l_bob_reg) {
-		printk(KERN_ERR "%s: pm660l_bob_reg NULL\n", __func__);
+		pr_err(KERN_ERR "%s: pm660l_bob_reg NULL\n", __func__);
 		return -1;
 	}
 
 	if (mode != REGULATOR_MODE_FAST && mode != REGULATOR_MODE_NORMAL) {
-		printk(KERN_ERR "%s: Invalid mode: %d", __func__, mode);
+		pr_err(KERN_ERR "%s: Invalid mode: %d", __func__, mode);
 		return -1;
 	}
 
 	if (pre_mode == mode) {
-		printk(KERN_ERR "%s: pre_mode[%d], mode[%d], return\n", __func__, pre_mode, mode);
+		pr_err(KERN_ERR "%s: pre_mode[%d], mode[%d], return\n", __func__, pre_mode, mode);
 		return 1;
 	}
 
@@ -10975,7 +10975,7 @@ int pm660l_bob_regulator_set_mode(unsigned int mode)
 			ua_load = 2000000;
 		rc = regulator_set_load(chg->pm660l_bob_reg, ua_load);
 		if (rc < 0) {
-			printk(KERN_ERR "%s: Couldn't set regulator load=%d rc=%d\n", __func__, ua_load, rc);
+			pr_err(KERN_ERR "%s: Couldn't set regulator load=%d rc=%d\n", __func__, ua_load, rc);
 			return -1;
 		}
 		pre_mode = mode;
@@ -10983,7 +10983,7 @@ int pm660l_bob_regulator_set_mode(unsigned int mode)
 		ua_load = 0;
 		rc = regulator_set_load(chg->pm660l_bob_reg, ua_load);
 		if (rc < 0) {
-			printk(KERN_ERR "%s: Couldn't set regulator load=%d rc=%d\n", __func__, ua_load, rc);
+			pr_err(KERN_ERR "%s: Couldn't set regulator load=%d rc=%d\n", __func__, ua_load, rc);
 			return -1;
 		}
 		pre_mode = mode;
@@ -11310,7 +11310,7 @@ static int smb2_probe(struct platform_device *pdev)
 		schedule_delayed_work(&chg->typec_disable_cmd_work, msecs_to_jiffies(1000));
 #endif
 
-	pr_info("QPNP SMB2 probed successfully usb:present=%d type=%d batt:present = %d health = %d charge = %d\n",
+	pr_debug("QPNP SMB2 probed successfully usb:present=%d type=%d batt:present = %d health = %d charge = %d\n",
 		usb_present, chg->real_charger_type,
 		batt_present, batt_health, batt_charge_type);
 	return rc;

@@ -1339,11 +1339,11 @@ void mp2650_dump_registers(void)
              chg_err("Couldn't  read 0x49 rc = %d\n", rc);
         }
 
-        printk(KERN_ERR "mp2650[0-0C]: 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x,", 
+        pr_err(KERN_ERR "mp2650[0-0C]: 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x,", 
 			val_buf[0], val_buf[1], val_buf[2], val_buf[3], val_buf[4], val_buf[5], val_buf[6], val_buf[7], val_buf[8], val_buf[9], val_buf[10], val_buf[11], val_buf[12]);
-        printk(KERN_ERR "mp2650[0D-19]: 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x,", 
+        pr_err(KERN_ERR "mp2650[0D-19]: 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x,", 
 			val_buf[13], val_buf[14], val_buf[15], val_buf[16], val_buf[17], val_buf[18], val_buf[19], val_buf[20], val_buf[21], val_buf[22], val_buf[23], val_buf[24], val_buf[25]);
-        printk(KERN_ERR "mp2650[1A-22, 48, 49]: 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, reg48=0x%x, reg49=0x%x \n", 
+        pr_err(KERN_ERR "mp2650[1A-22, 48, 49]: 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, reg48=0x%x, reg49=0x%x \n", 
 			val_buf[26], val_buf[27], val_buf[28], val_buf[29], val_buf[30], val_buf[31], val_buf[32], val_buf[33], val_buf[34], val_buf[35], val_buf[36]);
     }
     dump_count++;
@@ -1643,10 +1643,10 @@ bool oppo_charger_ic_chip_is_null(void)
 
 static int mp2650_mps_otg_en_gpio_init(struct chip_mp2650 *chip)
 {
-    printk(KERN_ERR "[OPPO_CHG][%s]: tongfeng test start!\n", __func__);
+    pr_err(KERN_ERR "[OPPO_CHG][%s]: tongfeng test start!\n", __func__);
 
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: chip_mp2650 not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: chip_mp2650 not ready!\n", __func__);
 		return -EINVAL;
 	}
 
@@ -1655,21 +1655,21 @@ static int mp2650_mps_otg_en_gpio_init(struct chip_mp2650 *chip)
 		chg_err("get mps_otg_en pinctrl fail\n");
 		return -EINVAL;
 	}
-    printk(KERN_ERR "[OPPO_CHG][%s]: tongfeng test 111!\n", __func__);
+    pr_err(KERN_ERR "[OPPO_CHG][%s]: tongfeng test 111!\n", __func__);
 
 	chip->mps_otg_en_active = pinctrl_lookup_state(chip->pinctrl, "mps_otg_en_active");
 	if (IS_ERR_OR_NULL(chip->mps_otg_en_active)) {
 		chg_err("get mps_otg_en_active fail\n");
 		return -EINVAL;
 	}
-    printk(KERN_ERR "[OPPO_CHG][%s]: tongfeng test 222!\n", __func__);
+    pr_err(KERN_ERR "[OPPO_CHG][%s]: tongfeng test 222!\n", __func__);
 
 	chip->mps_otg_en_sleep = pinctrl_lookup_state(chip->pinctrl, "mps_otg_en_sleep");
 	if (IS_ERR_OR_NULL(chip->mps_otg_en_sleep)) {
 		chg_err("get mps_otg_en fail\n");
 		return -EINVAL;
 	}
-    printk(KERN_ERR "[OPPO_CHG][%s]: tongfeng test 333!\n", __func__);
+    pr_err(KERN_ERR "[OPPO_CHG][%s]: tongfeng test 333!\n", __func__);
 
 	chip->mps_otg_en_default = pinctrl_lookup_state(chip->pinctrl, "mps_otg_en_default");
 	if (IS_ERR_OR_NULL(chip->mps_otg_en_default)) {
@@ -1680,7 +1680,7 @@ static int mp2650_mps_otg_en_gpio_init(struct chip_mp2650 *chip)
 	//if (chg->otg_en_gpio > 0) {
 		//gpio_direction_input(chg->wired_conn_gpio);
 	//}
-    printk(KERN_ERR "[OPPO_CHG][%s]: tongfeng test end!\n", __func__);
+    pr_err(KERN_ERR "[OPPO_CHG][%s]: tongfeng test end!\n", __func__);
 
 	pinctrl_select_state(chip->pinctrl, chip->mps_otg_en_sleep);
   	chg_err("tongfeng test, gpio_val:%d\n", gpio_get_value(chip->mps_otg_en_gpio));
@@ -1721,7 +1721,7 @@ void mp2650_wireless_set_mps_otg_en_val(int value)
 {    
     struct chip_mp2650 *chip = charger_ic;
 	if (!chip) {
-		printk(KERN_ERR "[OPPO_CHG][%s]: chip_mp2650 not ready!\n", __func__);
+		pr_err(KERN_ERR "[OPPO_CHG][%s]: chip_mp2650 not ready!\n", __func__);
 		return;
 	}
 
