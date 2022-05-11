@@ -144,7 +144,7 @@ static ssize_t show_eas_knob(struct kobject *kobj,
 static ssize_t store_eas_knob(struct kobject *kobj,
 		struct kobj_attribute *attr, const char *buf, size_t count)
 {
-	unsigned int val = 0;
+	unsigned int val = 1;
 
 	/*
 	 * 0: HMP
@@ -158,7 +158,7 @@ static ssize_t store_eas_knob(struct kobject *kobj,
 }
 
 static struct kobj_attribute eas_knob_attr =
-__ATTR(enable, 0600, show_eas_knob,
+__ATTR(enable, 0444, show_eas_knob,
 		store_eas_knob);
 #endif
 
