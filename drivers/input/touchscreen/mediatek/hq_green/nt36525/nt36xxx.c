@@ -1900,7 +1900,7 @@ static int32_t nvt_ts_probe(struct spi_device *client)
 				ts->int_trigger_type | IRQF_ONESHOT | IRQF_NO_SUSPEND, NVT_SPI_NAME, ts);
 #else
 		ret = request_threaded_irq(client->irq, NULL, nvt_ts_work_func,
-				ts->int_trigger_type | IRQF_ONESHOT, NVT_SPI_NAME, ts);
+				ts->int_trigger_type | IRQF_ONESHOT | IRQF_PERF_CRITICAL, NVT_SPI_NAME, ts);
 #endif
 		if (ret != 0) {
 			NVT_ERR("request irq failed. ret=%d\n", ret);
