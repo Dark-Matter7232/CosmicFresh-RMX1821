@@ -678,7 +678,7 @@ static inline int schedtune_adj_ta(struct task_struct *p)
 	cgroup_name(st->css.cgroup, name_buf, sizeof(name_buf));
 	if (!strncmp(name_buf, "top-app", strlen("top-app"))) {
 		pr_debug("top app is %s with adj %i\n", p->comm, adj);
-		return adj == 0 ? 10 : 1;
+		return adj == 0 ? 3 : 1;
 	}
 
 	return 0;
